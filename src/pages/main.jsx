@@ -27,10 +27,10 @@ function Main({ children }) {
           mode="inline"
           defaultSelectedKeys={["1"]}
         >
-          <Menu.Item key="/products" icon={<UserOutlined />}>
+          <Menu.Item key="/admin/products" icon={<UserOutlined />}>
             商品列表
           </Menu.Item>
-          <Menu.Item key="/pc" icon={<VideoCameraOutlined />}>
+          <Menu.Item key="/admin/pc" icon={<VideoCameraOutlined />}>
             商品分类
           </Menu.Item>
           <Menu.Item key="3" icon={<UploadOutlined />}>
