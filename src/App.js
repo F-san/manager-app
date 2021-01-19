@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React from "react";
+import { Link, Route } from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute";
+import Login from "./pages/Login";
+import Products from "./pages/Products";
+import User from "./pages/User";
+import Productcategories from "./pages/Product_categories";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Link to="/login">登录 |</Link>
+      <Link to="/products">商品列表 |</Link>
+      <Link to="/users">个人中心 |</Link>
+      <Link to="/">商品分类 </Link>
+      <hr />
+      <Route path="/" exact component={Productcategories} />
+      <PrivateRoute path="/users">
+        <User />
+      </PrivateRoute>
+      <Route path="/products" component={Products} />
+      <Route path="/login" component={Login} />
+    </>
   );
 }
 
