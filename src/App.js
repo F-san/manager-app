@@ -7,8 +7,8 @@ import Login from "./pages/Login";
 /* import PrivateRoute from "./components/PrivateRoute";
 import User from "./pages/User";
  */
-
 import Main from "./pages/main";
+
 function App() {
   return (
     <>

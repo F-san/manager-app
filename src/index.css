@@ -12,12 +12,37 @@
   margin-left: 0.57rem;
   color: #001529;
 }
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
+
 .logo {
   height: 32px;
   background: rgba(255, 255, 255, 0.3);
   margin: 16px;
 }
 
-.site-layout .site-layout-background {
-  background: #fff;
+.login-form {
+  width: 50%;
+  border-color: #1890ff;
+  /*垂直居中*/
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+}
+.login-form .ant-card-head {
+  font-size: 1.4rem;
+  text-align: center;
+  color: #001529;
+}
+@media (max-width: 750px) {
+  .login-form {
+    width: 90%;
+  }
 }
