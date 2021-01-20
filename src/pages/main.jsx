@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Children, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Layout, Menu } from "antd";
 import {
@@ -57,7 +57,7 @@ function Main({ children }) {
             minHeight: 280,
           }}
         >
-          <h1>欢迎来到本商城管理</h1>
+          {children}
         </Content>
       </Layout>
     </Layout>

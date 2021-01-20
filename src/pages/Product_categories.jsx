@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Button, Tooltip, Table, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { listByPageAPI } from "../services/products_categories";
+
 function Productcategories() {
   const columns = [
     {
@@ -25,6 +27,15 @@ function Productcategories() {
     },
   ];
   const [visible, setVisible] = useState(false);
+  const [list, setList] = useState([]);
+  const loadData = async () => {
+    const res = await listByPageAPI();
+    setList(res.categories);
+  };
+  useEffect(() => {
+    loadData();
+  }, []);
+
   return (
     <Card
       title="商品分类"

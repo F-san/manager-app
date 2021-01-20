@@ -1,5 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import { loginAPI } from "../services/auth";
+import { setToken } from "../utils/auth";
 import { Card, Form, Input, Button, Checkbox, message } from "antd";
 function Login() {
   const { push } = useHistory();
@@ -20,15 +22,22 @@ function Login() {
   };
 
   const onFinish = (values) => {
-    // console.log("Success:", values);
-    message.success("登陆成功");
-    // 调接口获取数据，然后成功后跳转
-    push("/admin");
+    loginAPI(values).then((res) => {
+      console.log(res);
+      // 调用登录接口
+      if (res.code === "success") {
+        message.success("登陆成功");
+        setToken(res.token);
+        push("/admin/products");
+      } else {
+        message.info(res.message);
+      }
+    });
   };
 
   const onFinishFailed = (errorInfo) => {
     // console.log("Failed:", errorInfo);
-    message.error("出错！");
+    message.error("请填写完整信息");
   };
 
   return (

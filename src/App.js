@@ -1,6 +1,6 @@
 import "./App.css";
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import Products from "./pages/Products";
 import Productcategories from "./pages/Product_categories";
 import Login from "./pages/Login";
@@ -19,6 +19,7 @@ function App() {
           <Route path="/admin/pc" component={Productcategories} />
         </Main>
       </Route>
+      <Redirect to="/login" from="/" />
     </>
   );
 }
