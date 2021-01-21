@@ -1,7 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Card, Button, Tooltip, Table, Modal } from "antd";
+import {
+  Card,
+  Button,
+  Tooltip,
+  Table,
+  Modal,
+  Form,
+  Input,
+  Popconfirm,
+} from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { listByPageAPI } from "../services/products_categories";
+import {
+  listByPageAPI,
+  saveAPI,
+  delAPI,
+} from "../services/products_categories";
 import { dalImgUrl } from "../utils/tools";
 
 function Productcategories() {
@@ -32,7 +45,7 @@ function Productcategories() {
           <img
             src={dalImgUrl(r.coverImg)}
             alt={r.name}
-            style={{ maxWidth: "120px", maxHeight: "120px" }}
+            style={{ maxWidth: "120px", maxHeight: "100px" }}
           />
         );
       },
@@ -40,7 +53,7 @@ function Productcategories() {
     {
       title: "操作",
       align: "center",
-      render() {
+      render(t, r) {
         return (
           <>
             <Tooltip title="编辑">
@@ -50,9 +63,17 @@ function Productcategories() {
                 icon={<EditOutlined />}
               />
             </Tooltip>
-            <Tooltip title="删除">
+
+            <Popconfirm
+              title="确认删除？"
+              onConfirm={() => {
+                delAPI(r._id).then(() => {
+                  loadData();
+                });
+              }}
+            >
               <Button type="primary" danger icon={<DeleteOutlined />} />
-            </Tooltip>
+            </Popconfirm>
           </>
         );
       },
@@ -60,9 +81,19 @@ function Productcategories() {
   ];
   const [visible, setVisible] = useState(false);
   const [list, setList] = useState([]);
-  const loadData = async () => {
-    const res = await listByPageAPI();
+  // 商品总数
+  const [total, setTotal] = useState(0);
+  const [form] = Form.useForm();
+  const loadData = async (page = 1) => {
+    const res = await listByPageAPI({ page });
     setList(res.categories);
+    setTotal(res.totalCount);
+  };
+  const saveHandle = (value) => {
+    saveAPI(value).then(() => {
+      loadData();
+      setVisible(false);
+    });
   };
   // 初始化执行
   useEffect(() => {
@@ -77,17 +108,61 @@ function Productcategories() {
           <Button
             type="primary"
             icon={<PlusOutlined />}
-            onClick={() => setVisible(true)}
+            onClick={() => {
+              // 设置表单的默认值
+              form.setFieldsValue({
+                name: "",
+              });
+              setVisible(true);
+            }}
           />
         </Tooltip>
       }
     >
-      <Table columns={columns} bordered dataSource={list} />
+      <Table
+        columns={columns}
+        bordered
+        dataSource={list}
+        pagination={{
+          total,
+          pageSize: 10,
+          onChange(page) {
+            loadData(page);
+          },
+        }}
+      />
       <Modal
         title="新增"
         visible={visible}
+        footer={null}
         onCancel={() => setVisible(false)}
-      />
+      >
+        <Form
+          form={form}
+          onFinish={(values) => {
+            // console.log(values);
+            saveHandle(values);
+          }}
+        >
+          <Form.Item
+            name="name"
+            label="名称"
+            rules={[
+              {
+                required: true,
+                message: "请填写名称！",
+              },
+            ]}
+          >
+            <Input placeholder="请输入商品分类名称" />
+          </Form.Item>
+          <Form.Item>
+            <Button block type="primary" htmlType="submit">
+              保存
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
     </Card>
   );
 }

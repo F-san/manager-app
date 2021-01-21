@@ -23,10 +23,10 @@ export const saveAPI = (data) => post("/api/v1/admin/product_categories", data);
  * @param {*} data
  */
 export const modyfyAPI = (id, data) =>
-  put(`/api/v1/admin/product_categories${id}`, data);
+  put(`/api/v1/admin/product_categories/${id}`, data);
 
 /**
  * 根据ID删除
  * @param {*} id
  */
-export const delAPI = (id) => del(`/api/v1/admin/product_categories${id}`);
+export const delAPI = (id) => del(`/api/v1/admin/product_categories/${id}`);
