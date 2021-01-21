@@ -21,6 +21,7 @@ import {
   listByPageAPI,
   saveAPI,
   delAPI,
+  modyfyAPI,
 } from "../services/products_categories";
 import { dalImgUrl, uploadUrl } from "../utils/tools";
 
@@ -68,6 +69,14 @@ function Productcategories() {
                 style={{ marginRight: "1rem" }}
                 type="primary"
                 icon={<EditOutlined />}
+                onClick={() => {
+                  setVisible(true);
+                  setCurrentId(r._id);
+                  form.setFieldsValue({
+                    name: r.name,
+                  });
+                  setImageUrl(r.coverImg);
+                }}
               />
             </Tooltip>
 
@@ -93,6 +102,8 @@ function Productcategories() {
   const [loading, setLoading] = useState(false);
   // 当前图片
   const [imageUrl, setImageUrl] = useState("");
+  //当前商品ID，用于判断是否是修改操作
+  const [currentId, setCurrentId] = useState("");
   const [form] = Form.useForm();
   const loadData = async (page = 1) => {
     const res = await listByPageAPI({ page });
@@ -100,10 +111,18 @@ function Productcategories() {
     setTotal(res.totalCount);
   };
   const saveHandle = (value) => {
-    saveAPI({ ...value, coverImg: imageUrl }).then(() => {
-      loadData();
-      setVisible(false);
-    });
+    // 根据是否有ID判断是新增还是修改
+    if (currentId) {
+      modyfyAPI(currentId, { ...value, coverImg: imageUrl }).then(() => {
+        loadData();
+        setVisible(false);
+      });
+    } else {
+      saveAPI({ ...value, coverImg: imageUrl }).then(() => {
+        loadData();
+        setVisible(false);
+      });
+    }
   };
   // 图片上传状态改变
   const handleChange = (info) => {
@@ -138,6 +157,8 @@ function Productcategories() {
             icon={<PlusOutlined />}
             onClick={() => {
               setImageUrl("");
+              // 设置当前ID为空，用以区别是否是修改操作
+              setCurrentId("");
               // 设置表单的默认值
               form.setFieldsValue({
                 name: "",
