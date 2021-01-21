@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { loginAPI } from "../services/auth";
 import { setToken } from "../utils/auth";
 import { Card, Form, Input, Button, Checkbox, message } from "antd";
 function Login() {
   const { push } = useHistory();
+  const [fields, setFields] = useState([
+    {
+      name: ["userName"],
+      value: "admin",
+    },
+    {
+      name: ["password"],
+      value: "admin@12138",
+    },
+  ]);
 
   const layout = {
     labelCol: {
@@ -23,7 +33,6 @@ function Login() {
 
   const onFinish = (values) => {
     loginAPI(values).then((res) => {
-      console.log(res);
       // 调用登录接口
       if (res.code === "success") {
         message.success("登陆成功");
@@ -45,6 +54,7 @@ function Login() {
       <Form
         {...layout}
         name="basic"
+        fields={fields}
         initialValues={{
           remember: true,
         }}
@@ -53,7 +63,7 @@ function Login() {
       >
         <Form.Item
           label="用户名"
-          name="username"
+          name="userName"
           rules={[
             {
               required: true,
