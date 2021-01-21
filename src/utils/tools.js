@@ -16,3 +16,5 @@ export function dalImgUrl(str) {
     return "https://ss0.baidu.com/7Po3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/b17eca8065380cd726233895a244ad345982818d.jpg";
   }
 }
+
+export const uploadUrl = serverUrl + "/api/v1/common/file_upload";
