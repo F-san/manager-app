@@ -8,22 +8,16 @@ import {
   Form,
   Input,
   Popconfirm,
-  Upload,
-  message,
 } from "antd";
-import {
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  LoadingOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import {
   listByPageAPI,
   saveAPI,
   delAPI,
   modyfyAPI,
 } from "../services/products_categories";
-import { dalImgUrl, uploadUrl } from "../utils/tools";
+import FileUpload from "../components/FileUpload";
+import { dalImgUrl } from "../utils/tools";
 
 function Productcategories() {
   const columns = [
@@ -36,7 +30,7 @@ function Productcategories() {
       },
     },
     {
-      title: "商品名称",
+      title: "分类名称",
       align: "center",
       dataIndex: "name",
     },
@@ -46,7 +40,7 @@ function Productcategories() {
       dataIndex: "description",
     },
     {
-      title: "图片",
+      title: "主图",
       align: "center",
       render(t, r) {
         return (
@@ -99,7 +93,7 @@ function Productcategories() {
   const [list, setList] = useState([]);
   // 商品总数
   const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(false);
+
   // 当前图片
   const [imageUrl, setImageUrl] = useState("");
   //当前商品ID，用于判断是否是修改操作
@@ -124,24 +118,7 @@ function Productcategories() {
       });
     }
   };
-  // 图片上传状态改变
-  const handleChange = (info) => {
-    if (info.file.status === "uploading") {
-      setLoading(true);
-      return;
-    }
-    if (info.file.status === "done") {
-      setLoading(false);
-      console.log(info);
-      setImageUrl(info.file.response.info);
-    }
-  };
-  const uploadButton = (
-    <div>
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </div>
-  );
+
   // 初始化执行
   useEffect(() => {
     loadData();
@@ -208,7 +185,6 @@ function Productcategories() {
             <Input placeholder="请输入商品分类名称" />
           </Form.Item>
           <Form.Item
-            name="coverImg"
             label="图片"
             rules={[
               {
@@ -217,25 +193,7 @@ function Productcategories() {
               },
             ]}
           >
-            <Upload
-              // name 表示服务器端接收到的数据的name属性
-              name="file"
-              listType="picture-card"
-              className="avatar-uploader"
-              showUploadList={false}
-              action={uploadUrl}
-              onChange={handleChange}
-            >
-              {imageUrl ? (
-                <img
-                  src={dalImgUrl(imageUrl)}
-                  alt="file"
-                  style={{ maxWidth: "80%", maxHeight: "80%" }}
-                />
-              ) : (
-                uploadButton
-              )}
-            </Upload>
+            <FileUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
           </Form.Item>
           <Form.Item>
             <Button block type="primary" htmlType="submit">
