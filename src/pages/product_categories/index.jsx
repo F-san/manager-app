@@ -1,24 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-  Card,
-  Button,
-  Tooltip,
-  Table,
-  Modal,
-  Form,
-  Input,
-  Popconfirm,
-} from "antd";
+import { Card, Button, Tooltip, Table, Popconfirm } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import {
-  listByPageAPI,
-  saveAPI,
-  delAPI,
-  modyfyAPI,
-} from "../services/products_categories";
-import FileUpload from "../components/FileUpload";
-import { dalImgUrl } from "../utils/tools";
-
+import { listByPageAPI, delAPI } from "../../services/products_categories";
+import { dalImgUrl } from "../../utils/tools";
+import Editor from "./components/Editor";
 function Productcategories() {
   const columns = [
     {
@@ -65,11 +50,11 @@ function Productcategories() {
                 icon={<EditOutlined />}
                 onClick={() => {
                   setVisible(true);
-                  setCurrentId(r._id);
-                  form.setFieldsValue({
+                  setCurrent({
+                    id: r._id,
                     name: r.name,
+                    coverImg: r.coverImg,
                   });
-                  setImageUrl(r.coverImg);
                 }}
               />
             </Tooltip>
@@ -94,29 +79,12 @@ function Productcategories() {
   // 商品总数
   const [total, setTotal] = useState(0);
 
-  // 当前图片
-  const [imageUrl, setImageUrl] = useState("");
-  //当前商品ID，用于判断是否是修改操作
-  const [currentId, setCurrentId] = useState("");
-  const [form] = Form.useForm();
+  //当前数据
+  const [current, setCurrent] = useState({});
   const loadData = async (page = 1) => {
     const res = await listByPageAPI({ page });
     setList(res.categories);
     setTotal(res.totalCount);
-  };
-  const saveHandle = (value) => {
-    // 根据是否有ID判断是新增还是修改
-    if (currentId) {
-      modyfyAPI(currentId, { ...value, coverImg: imageUrl }).then(() => {
-        loadData();
-        setVisible(false);
-      });
-    } else {
-      saveAPI({ ...value, coverImg: imageUrl }).then(() => {
-        loadData();
-        setVisible(false);
-      });
-    }
   };
 
   // 初始化执行
@@ -133,15 +101,13 @@ function Productcategories() {
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => {
-              setImageUrl("");
-              // 设置当前ID为空，用以区别是否是修改操作
-              setCurrentId("");
-              // 设置表单的默认值
-              form.setFieldsValue({
+              setVisible(true);
+              //  设置当前数据为空
+              setCurrent({
+                id: "",
                 name: "",
                 coverImg: "",
               });
-              setVisible(true);
             }}
           />
         </Tooltip>
@@ -159,49 +125,12 @@ function Productcategories() {
           },
         }}
       />
-      <Modal
-        title="新增"
+      <Editor
         visible={visible}
-        footer={null}
-        onCancel={() => setVisible(false)}
-      >
-        <Form
-          form={form}
-          onFinish={(values) => {
-            // console.log(values);
-            saveHandle(values);
-          }}
-        >
-          <Form.Item
-            name="name"
-            label="名称"
-            rules={[
-              {
-                required: true,
-                message: "请填写名称！",
-              },
-            ]}
-          >
-            <Input placeholder="请输入商品分类名称" />
-          </Form.Item>
-          <Form.Item
-            label="图片"
-            rules={[
-              {
-                required: true,
-                message: "请上传图片！",
-              },
-            ]}
-          >
-            <FileUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
-          </Form.Item>
-          <Form.Item>
-            <Button block type="primary" htmlType="submit">
-              保存
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
+        setVisible={setVisible}
+        loadData={loadData}
+        current={current}
+      />
     </Card>
   );
 }
