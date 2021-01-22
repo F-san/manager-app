@@ -21,10 +21,11 @@ export const saveAPI = (data) => post("/api/v1/admin/products", data);
  * @param {*} id
  * @param {*} data
  */
-export const modyfyAPI = (id, data) => put(`/api/v1/admin/products${id}`, data);
+export const modyfyAPI = (id, data) =>
+  put(`/api/v1/admin/products/${id}`, data);
 
 /**
  * 根据ID删除
  * @param {*} id
  */
-export const delAPI = (id) => del(`/api/v1/admin/products${id}`);
+export const delAPI = (id) => del(`/api/v1/admin/products/${id}`);
