@@ -46,3 +46,9 @@
     width: 90%;
   }
 }
+.ant-layout-content {
+  overflow-y: auto;
+}
+.ant-layout-sider-children {
+  height: 100%;
+}

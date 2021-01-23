@@ -1,9 +1,9 @@
 import "./App.css";
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import Products from "./pages/products";
+import Products from "./pages/products/index";
 import Productcategories from "./pages/product_categories/index";
-import Login from "./pages/login";
+import Login from "./pages/Login";
 /* import PrivateRoute from "./components/PrivateRoute";
 import User from "./pages/User";
  */
