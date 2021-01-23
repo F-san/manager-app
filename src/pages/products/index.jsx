@@ -137,6 +137,7 @@ function Products() {
           onChange(page) {
             loadData(page);
           },
+          showSizeChanger: false,
         }}
       />
       <Editor
