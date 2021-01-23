@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Form, Input } from "antd";
+import { Button, Modal, Form, Input, Select } from "antd";
 import FileUpload from "../../../components/FileUpload";
 import { saveAPI, modyfyAPI } from "../../../services/products";
-
-/**
- *
+import { listByPageAPI as loadPcAPI } from "../../../services/products_categories";
+/*
  * @param {*} param0
  * visible 是否显示弹出窗
  * loadData 加载数据
@@ -12,8 +11,14 @@ import { saveAPI, modyfyAPI } from "../../../services/products";
  */
 function Editor({ visible, setVisible, loadData, current }) {
   const [imageUrl, setImageUrl] = useState("");
+  const [category, setCategory] = useState([]);
   //   useForm 方法获取当前form实例
   const [form] = Form.useForm();
+  useEffect(() => {
+    loadPcAPI().then((res) => {
+      setCategory(res.categories);
+    });
+  }, []);
 
   // 监听 current 即当前数据的变化。，若变化，则处理
   useEffect(() => {
@@ -21,6 +26,8 @@ function Editor({ visible, setVisible, loadData, current }) {
     form.setFieldsValue({
       name: current.name,
       coverImg: current.coverImg,
+      price: current.price,
+      productCategory: current.productCategory,
     });
   }, [current]);
   const saveHandle = (value) => {
@@ -63,6 +70,35 @@ function Editor({ visible, setVisible, loadData, current }) {
             ]}
           >
             <Input placeholder="请输入商品分类名称" />
+          </Form.Item>
+          <Form.Item
+            name="price"
+            label="价格"
+            rules={[
+              {
+                required: true,
+                message: "请填写价格！",
+              },
+            ]}
+          >
+            <Input placeholder="请输入商品价格" />
+          </Form.Item>
+          <Form.Item
+            name="productCategory"
+            label="分类"
+            rules={[
+              {
+                required: true,
+                message: "请选择分类！",
+              },
+            ]}
+          >
+            <Select placeholder="请选择分类">
+              {category.map((item) => (
+                <Select.Option value={item._id}>{item.name}</Select.Option>
+              ))}
+              {/* <Select.Option value="1">口红</Select.Option> */}
+            </Select>
           </Form.Item>
           <Form.Item
             label="图片"

@@ -21,6 +21,13 @@ function Products() {
       dataIndex: "name",
     },
     {
+      title: "分类",
+      align: "center",
+      render(t, r) {
+        return <>{r.productCategory ? r.productCategory.name : "暂无分类"}</>;
+      },
+    },
+    {
       title: "价格",
       align: "center",
       dataIndex: "price",
@@ -113,6 +120,7 @@ function Products() {
                 id: "",
                 name: "",
                 coverImg: "",
+                productCategory: "",
               });
             }}
           />
