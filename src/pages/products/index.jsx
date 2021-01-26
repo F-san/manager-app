@@ -91,7 +91,6 @@ function Products() {
   const [list, setList] = useState([]);
   // 商品总数
   const [total, setTotal] = useState(0);
-
   //当前数据
   const [current, setCurrent] = useState({});
   const loadData = async (page = 1) => {
@@ -99,7 +98,6 @@ function Products() {
     setList(res.products);
     setTotal(res.totalCount);
   };
-
   // 初始化执行
   useEffect(() => {
     loadData();
@@ -130,6 +128,7 @@ function Products() {
       <Table
         columns={columns}
         bordered
+        rowKey="_id"
         dataSource={list}
         pagination={{
           total,

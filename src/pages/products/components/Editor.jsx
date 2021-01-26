@@ -14,15 +14,21 @@ function Editor({ visible, setVisible, loadData, current }) {
   const [category, setCategory] = useState([]);
   //   useForm 方法获取当前form实例
   const [form] = Form.useForm();
+  const [isInited, setIsInited] = useState(false);
   useEffect(() => {
     loadPcAPI().then((res) => {
       setCategory(res.categories);
     });
+    // 设置已经初始化
+    setIsInited(true);
   }, []);
 
   // 监听 current 即当前数据的变化。，若变化，则处理
   useEffect(() => {
     setImageUrl(current.coverImg);
+    // 若没有初始化,则直接返回
+    if (!isInited) return;
+
     form.setFieldsValue({
       name: current.name,
       coverImg: current.coverImg,
@@ -95,9 +101,10 @@ function Editor({ visible, setVisible, loadData, current }) {
           >
             <Select placeholder="请选择分类">
               {category.map((item) => (
-                <Select.Option value={item._id}>{item.name}</Select.Option>
+                <Select.Option key={item._id} value={item._id}>
+                  {item.name}
+                </Select.Option>
               ))}
-              {/* <Select.Option value="1">口红</Select.Option> */}
             </Select>
           </Form.Item>
           <Form.Item

@@ -10,7 +10,8 @@ function Productcategories() {
       title: "序号",
       align: "center",
       width: 80,
-      render(txt, record, index) {
+      // 参数分别为当前行的值，当前行数据，行索引
+      render(text, record, index) {
         return <>{index + 1}</>;
       },
     },
@@ -78,7 +79,6 @@ function Productcategories() {
   const [list, setList] = useState([]);
   // 商品总数
   const [total, setTotal] = useState(0);
-
   //当前数据
   const [current, setCurrent] = useState({});
   const loadData = async (page = 1) => {
@@ -116,6 +116,7 @@ function Productcategories() {
       <Table
         columns={columns}
         bordered
+        rowKey="_id"
         dataSource={list}
         pagination={{
           total,

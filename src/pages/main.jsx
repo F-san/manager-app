@@ -1,12 +1,14 @@
-import React, { Children, useState } from "react";
+/* eslint-disable react/jsx-no-target-blank */
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Layout, Menu } from "antd";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
+  UnorderedListOutlined,
+  BarcodeOutlined,
+  GithubOutlined,
+  GiftOutlined,
 } from "@ant-design/icons";
 
 const { Header, Sider, Content } = Layout;
@@ -17,7 +19,9 @@ function Main({ children }) {
   return (
     <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="logo" />
+        <div style={{ color: "#fff", fontSize: "1.5rem", textAlign: "center" }}>
+          <GiftOutlined />
+        </div>
         <Menu
           // key为item的唯一值
           onClick={({ key }) => {
@@ -27,20 +31,18 @@ function Main({ children }) {
           mode="inline"
           defaultSelectedKeys={["1"]}
         >
-          <Menu.Item key="/admin/products" icon={<UserOutlined />}>
+          <Menu.Item key="/admin/products" icon={<UnorderedListOutlined />}>
             商品列表
           </Menu.Item>
-          <Menu.Item key="/admin/pc" icon={<VideoCameraOutlined />}>
+          <Menu.Item key="/admin/pc" icon={<BarcodeOutlined />}>
             商品分类
-          </Menu.Item>
-          <Menu.Item key="3" icon={<UploadOutlined />}>
-            nav 3
           </Menu.Item>
         </Menu>
       </Sider>
       <Layout className="site-layout">
         <Header className="site-layout-background" style={{ padding: 0 }}>
           {React.createElement(
+            // createElement():创建并返回指定类型的新 React 元素
             collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
             {
               className: "trigger",
@@ -48,6 +50,11 @@ function Main({ children }) {
             }
           )}
           <span className="shop-title">商城后台管理</span>
+          <a href="https://github.com/F-san/manager-app" target="_blank">
+            <GithubOutlined
+              style={{ width: "2rem", fontSize: "1.5rem", marginLeft: "1rem" }}
+            />
+          </a>
         </Header>
         <Content
           className="site-layout-background"

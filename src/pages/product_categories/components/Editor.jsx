@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, Input } from "antd";
 import FileUpload from "../../../components/FileUpload";
 import { saveAPI, modyfyAPI } from "../../../services/products_categories";
-
 /**
  *
  * @param {*} param0
@@ -14,10 +13,14 @@ function Editor({ visible, setVisible, loadData, current }) {
   const [imageUrl, setImageUrl] = useState("");
   //   useForm 方法获取当前form实例
   const [form] = Form.useForm();
-
+  const [isInited, setIsInited] = useState(false);
+  useEffect(() => {
+    setIsInited(true);
+  }, []);
   // 监听 current 即当前数据的变化。，若变化，则处理
   useEffect(() => {
     setImageUrl(current.coverImg);
+    if (!isInited) return;
     form.setFieldsValue({
       name: current.name,
       coverImg: current.coverImg,

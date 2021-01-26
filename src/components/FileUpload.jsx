@@ -50,7 +50,8 @@ export const FileUpload = ({ imageUrl, setImageUrl }) => {
 // 定义组件的属性，可写可不写
 FileUpload.propTypes = {
   // 该组件接收一个属性，类型为字符串且必填
-  imageUrl: PropTypes.string.isRequired,
+  // imageUrl: PropTypes.string.isRequired,
+  imageUrl: PropTypes.string,
   setImageUrl: PropTypes.func,
 };
 
